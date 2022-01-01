@@ -1,0 +1,12 @@
+apiVersion: config/v1
+kind: MyKind
+metadata:
+  name: test
+spec:
+  containers:
+    - image: nginx:latest
+      name: nginx
+  runLatest:
+    container:
+      image: alpine:latest
+      name: alpine

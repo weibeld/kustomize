@@ -1,0 +1,8 @@
+kind: Kustomization
+
+resources:
+  - ../../base
+  - serviceaccount.yaml
+
+patchesStrategicMerge:
+  - add-serviceaccount.yaml

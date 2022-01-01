@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+secretGenerator:
+- name: recaptcha
+  files:
+    - site_key.txt
+    - secret_key.txt
+
+# Updating the ConfigMap works with generators as well.
+configMapGenerator:
+- name: conf
+  behavior: merge
+  literals:
+    - recaptcha.conf=|
+        enabled=true
+        site_key=/var/run/secrets/recaptcha/site_key.txt
+        secret_key=/var/run/secrets/recaptcha/secret_key.txt
+
+patchesJson6902:
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: example
+  path: deployment.yaml

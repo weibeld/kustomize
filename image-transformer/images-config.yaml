@@ -1,0 +1,3 @@
+images:
+  - kind: MyKind
+    path: spec/runLatest/container/image

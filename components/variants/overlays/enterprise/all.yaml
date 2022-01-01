@@ -1,0 +1,59 @@
+apiVersion: v1
+data:
+  db.conf: |
+    endpoint=127.0.0.1:1234
+    name=app
+    user=admin
+    pass=/var/run/secrets/db/dbpass.txt
+  ldap.conf: |
+    endpoint=ldap://ldap.example.com
+    bindDN=cn=admin,dc=example,dc=com
+    pass=/var/run/secrets/ldap/ldappass.txt
+  main.conf: ' color=cornflower_blue log_level=info'
+kind: ConfigMap
+metadata:
+  name: conf-7b7k54ht79
+---
+apiVersion: v1
+data:
+  dbpass.txt: ZGJwYXNzCg==
+kind: Secret
+metadata:
+  name: dbpass-96786m5764
+type: Opaque
+---
+apiVersion: v1
+data:
+  ldappass.txt: bGRhcHBhc3MK
+kind: Secret
+metadata:
+  name: ldappass-d595bd62k7
+type: Opaque
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example
+spec:
+  template:
+    spec:
+      containers:
+      - image: example:1.0
+        name: example
+        volumeMounts:
+        - mountPath: /var/run/secrets/ldap/
+          name: ldappass
+        - mountPath: /var/run/secrets/db/
+          name: dbpass
+        - mountPath: /etc/config
+          name: conf
+      volumes:
+      - name: ldappass
+        secret:
+          secretName: ldappass-d595bd62k7
+      - name: dbpass
+        secret:
+          secretName: dbpass-96786m5764
+      - configMap:
+          name: conf-7b7k54ht79
+        name: conf

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conf
+data:
+  ldap.conf: |
+    endpoint=ldap://ldap.example.com
+    bindDN=cn=admin,dc=example,dc=com
+    pass=/var/run/secrets/ldap/ldappass.txt

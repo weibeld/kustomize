@@ -1,0 +1,8 @@
+kind: Kustomization
+
+resources:
+  # Does not work, reults in error "may not add resource with an already
+  # registered id: apps_v1_Deployment|~X|example". Cannot use multiple overlays
+  # that modify the same base resource.
+  - ../serviceaccount
+  - ../securitycontext
